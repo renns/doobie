@@ -1,6 +1,8 @@
 import FreeGen2._
 import sbt.dsl.LinterLevel.Ignore
 
+version in Global := Common.uniqueVersion("1.0")
+
 // Library versions all in one place, for convenience and sanity.
 lazy val catsVersion          = "2.4.2"
 lazy val catsEffectVersion    = "3.0.0"
@@ -54,7 +56,7 @@ lazy val buildSettings = Seq(
 lazy val commonSettings =
   compilerFlags ++
   Seq(
-    scalaVersion := scala213Version,
+    scalaVersion := scala212Version,
     crossScalaVersions := Seq(scala212Version, scala213Version, scala30VersionOld, scala30Version),
 
     // These sbt-header settings can't be set in ThisBuild for some reason
@@ -124,6 +126,8 @@ lazy val commonSettings =
   )
 
 lazy val publishSettings = Seq(
+  credentials += Common.readRepoCredentials(),
+  publishTo in Global := Some("a8-repo-releases" at Common.readRepoUrl()),
   homepage := Some(url("https://github.com/tpolecat/doobie")),
   developers := List(
     Developer("tpolecat", "Rob Norris", "rob_norris@mac.com", url("http://www.tpolecat.org"))
